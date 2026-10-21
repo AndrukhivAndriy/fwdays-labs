@@ -1,0 +1,22 @@
+mentor:
+  name: mentor
+  namespace: mentor
+  ownNamespaceRW: true
+
+students:
+  - name: student01
+    access:
+      - namespace: student01
+        role: rw
+
+  - name: student02
+    access:
+      - namespace: student01
+        role: ro
+      - namespace: default
+        role: ro
+
+  - name: student03
+    access:
+      - namespace: student03
+        role: rw

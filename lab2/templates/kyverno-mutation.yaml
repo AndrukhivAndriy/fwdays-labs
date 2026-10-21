@@ -7,9 +7,13 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/part-of: fwdays-policies
 spec:
+  admission: true
   background: false
+  emitWarning: false
+  validationFailureAction: Audit
   rules:
     - name: add-student-label
+      skipBackgroundRequests: true
       match:
         any:
           - resources:
@@ -23,6 +27,7 @@ spec:
             labels:
               {{ .Values.podLabelKey }}: {{ .Values.studentPodLabelValue | quote }}
     - name: add-mentor-label
+      skipBackgroundRequests: true
       match:
         any:
           - resources:

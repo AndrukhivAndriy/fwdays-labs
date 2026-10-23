@@ -1,0 +1,42 @@
+{{- if .Values.policies.readonlyRootfs.enabled }}
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: {{ .Release.Name }}-readonly-rootfs
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/part-of: fwdays-policies
+spec:
+  admission: true
+  background: true
+  emitWarning: false
+  validationFailureAction: Audit
+  rules:
+    - name: check-readonly-rootfs
+      skipBackgroundRequests: true
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaceSelector:
+                matchExpressions:
+                  - key: {{ .Values.namespaceLabelKey | quote }}
+                    operator: In
+                    values:
+                      - {{ .Values.studentNamespaceLabelValue | quote }}
+                      - {{ .Values.mentorNamespaceLabelValue | quote }}
+      validate:
+        failureAction: Audit
+        allowExistingViolations: true
+        message: "All regular and init containers must set securityContext.readOnlyRootFilesystem=true"
+        pattern:
+          spec:
+            containers:
+              - name: "*"
+                securityContext:
+                  readOnlyRootFilesystem: true
+            =(initContainers):
+              - name: "*"
+                securityContext:
+                  readOnlyRootFilesystem: true
+{{- end }}

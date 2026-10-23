@@ -1,22 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: fwdays-policies
+  name: kyverno-istio
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/AndrukhivAndriy/fwdays-labs.git
     targetRevision: dev
-    path: lab2
-    helm:
-      releaseName: fwdays-policies
+    path: lab3
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: kyverno
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - ServerSideApply=true

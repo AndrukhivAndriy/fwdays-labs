@@ -1,0 +1,24 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-istio-sidecar
+spec:
+  background: true
+  validationFailureAction: Audit
+  rules:
+    - name: check-istio-sidecar
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchLabels:
+                  person: student
+      validate:
+        message: "Student pods must have an Istio sidecar"
+        pattern:
+          spec:
+            initContainers:
+              - name: istio-proxy
+                restartPolicy: Always

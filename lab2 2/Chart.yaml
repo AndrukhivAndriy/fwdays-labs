@@ -1,6 +1,0 @@
-apiVersion: v2
-name: fwdays-policies
-version: 0.1.0
-appVersion: "1.0"
-description: "Module 03: GitOps-managed Kyverno policies for mentor and student namespaces"
-type: application

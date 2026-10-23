@@ -29,7 +29,8 @@ monitoring-kube-state-metrics-764584797b-bmpbf         1/1     Running   0
 monitoring-prometheus-node-exporter-v28g4              1/1     Running   0
 prometheus-monitoring-kube-prometheus-prometheus-0     2/2     Running   0
 ```
-
+![argo applications](screenshots/argo1.jpg)
+![argo applications](screenshots/argo2.jpg)
 ## 2. Дашборд ресурсів студентських namespaces
 
 Створено JSON-дашборд `student-resources.json`. Панелі відображають CPU, RAM і кількість Pod для `student01`, `student02`, `student03`, а також ресурси вузла. Для порожніх namespaces у PromQL передбачено нульові значення на основі `kube_namespace_created`.

@@ -1,0 +1,43 @@
+{{- if .Values.policies.personMutation.enabled }}
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: {{ .Release.Name }}-person-label
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/part-of: fwdays-policies
+spec:
+  admission: true
+  background: false
+  emitWarning: false
+  validationFailureAction: Audit
+  rules:
+    - name: add-student-label
+      skipBackgroundRequests: true
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaceSelector:
+                matchLabels:
+                  {{ .Values.namespaceLabelKey }}: {{ .Values.studentNamespaceLabelValue | quote }}
+      mutate:
+        patchStrategicMerge:
+          metadata:
+            labels:
+              {{ .Values.podLabelKey }}: {{ .Values.studentPodLabelValue | quote }}
+    - name: add-mentor-label
+      skipBackgroundRequests: true
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaceSelector:
+                matchLabels:
+                  {{ .Values.namespaceLabelKey }}: {{ .Values.mentorNamespaceLabelValue | quote }}
+      mutate:
+        patchStrategicMerge:
+          metadata:
+            labels:
+              {{ .Values.podLabelKey }}: {{ .Values.mentorPodLabelValue | quote }}
+{{- end }}

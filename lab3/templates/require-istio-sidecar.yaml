@@ -20,6 +20,6 @@ spec:
         deny:
           conditions:
             all:
-              - key: "{{ length(request.object.spec.initContainers[?name=='istio-proxy' && restartPolicy=='Always'] || `[]`) }}"
+              - key: {{ "{{ length(request.object.spec.initContainers[?name=='istio-proxy' && restartPolicy=='Always'] || `[]`) }}" | quote }}
                 operator: Equals
                 value: 0

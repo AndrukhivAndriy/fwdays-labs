@@ -1,0 +1,9 @@
+.venv/
+kubeconfigs/
+.git/
+__pycache__/
+*.pyc
+.DS_Store
+
+kubeconfigs/
+.venv/

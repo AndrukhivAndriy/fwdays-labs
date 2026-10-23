@@ -1,0 +1,36 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: lab-add-person-label
+spec:
+  background: false
+  rules:
+    - name: add-student-label
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaceSelector:
+                matchLabels:
+                  person-role: student
+      mutate:
+        patchStrategicMerge:
+          metadata:
+            labels:
+              person: student
+
+    - name: add-mentor-label
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaceSelector:
+                matchLabels:
+                  person-role: mentor
+      mutate:
+        patchStrategicMerge:
+          metadata:
+            labels:
+              person: mentor

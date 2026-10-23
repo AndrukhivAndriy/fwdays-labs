@@ -1,0 +1,36 @@
+{{- $mentor := .Values.mentor.name }}
+{{- $mentorNamespace := .Values.mentor.namespace }}
+
+{{- range .Values.students }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: mentor-rw
+  namespace: {{ .name }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ $mentor }}
+    namespace: {{ $mentorNamespace }}
+roleRef:
+  kind: ClusterRole
+  name: lab-rw
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
+
+{{- if .Values.mentor.ownNamespaceRW }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: mentor-own-rw
+  namespace: {{ $mentorNamespace }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ $mentor }}
+    namespace: {{ $mentorNamespace }}
+roleRef:
+  kind: ClusterRole
+  name: lab-rw
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
